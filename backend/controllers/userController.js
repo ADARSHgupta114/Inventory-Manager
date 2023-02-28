@@ -1,6 +1,11 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../models/userModel");
-const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+
+const generateToken = (id) => {
+   return jwt.sign({id},process.env.JWT_SECRET,{expiresIn:"1d"})
+}
+
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -21,15 +26,24 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("Email has already been registered");
   }
-  //Encrypt Password
-    const salt = await bcrypt.genSalt(10)
-    const hashedPasssword = await bcrypt.hash(password,salt)
+
 
   // Create new user
   const user = await User.create({
     name,
     email,
-    password : hashedPasssword,
+    password,
+  });
+  //Generate Token
+  const token = generateToken(user._id)
+
+  // Send HTTP-only Cookie
+  res.cookie("token", token, {
+    path: "/",
+    httpOnly: true,
+    expires: new Date(Date.now() + 1000 * 86400), // 1 day
+    sameSite: "none",
+    secure: true,
   });
 
   if (user) {
@@ -41,6 +55,7 @@ const registerUser = asyncHandler(async (req, res) => {
       photo,
       phone,
       bio,
+      token,
     });
   } else {
     res.status(400);
