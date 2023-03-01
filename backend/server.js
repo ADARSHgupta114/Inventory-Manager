@@ -4,6 +4,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const userRoute = require("./routes/userRoute");
+const productRoute = require("./routes/productRoute");
 const errorHandler = require("./middleWare/errorMiddleWare");
 const cookieParser = require("cookie-parser");
 const app = express();
@@ -17,6 +18,8 @@ app.use(bodyParser.json());
   
     // Routes Middleware
 app.use("/api/users",userRoute);
+
+app.use("/api/products",productRoute);
 //Routes
 app.get("/",(req,res)=>{
     res.send("Home page");
