@@ -67,7 +67,7 @@ const registerUser = asyncHandler(async (req, res) => {
 
 //Login User
 
-const loginUser = asyncHandler( async(req,res)=>{
+const loginUser = asyncHandler( async(req,res) => {
     const {email,password} = req.body;
   //Validate Request
   if(!email || !password){
