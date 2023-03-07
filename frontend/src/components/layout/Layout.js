@@ -1,15 +1,17 @@
-import React, { Children } from "react";
-import Header from "../header/header";
+import React from "react";
+import Footer from "../footer/Footer";
+import Header from "../header/Header";
 
-const Layout =()=>{
-    return (
-        <>
-            <Header>
-            <div style={{minHeight: "80vh"}} className= "--pad">
-                {children}
-            </div>
-            </Header>
-        </>
-    );
+const Layout = ({ children }) => {
+  return (
+    <>
+      <Header />
+      <div style={{ minHeight: "80vh" }} className="--pad">
+        {children}
+      </div>
+      <Footer />
+    </>
+  );
 };
+
 export default Layout;
